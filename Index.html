@@ -1,0 +1,76 @@
+﻿<!-- index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mars Rover Photos</title>
+    <style>
+        /* CSS for the loading spinner */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 4px solid #3498db;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: auto;
+            margin-top: 20px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Mars Rover Photos</h1>
+    <div class="loader" id="loader"></div> <!-- Loading spinner -->
+    <div id="photos"></div>
+
+    <script>
+        // Function to fetch photos from the API
+        async function fetchPhotos() {
+            try {
+                const response = await fetch('http://localhost:5261/MarsRoverPhoto');
+                const data = await response.json();
+                console.log('Response data:', data);
+                hideLoader(); // Hide the loader when photos are loaded
+                displayPhotos(data);
+            } catch (error) {
+                console.error('Error fetching photos:', error);
+                hideLoader(); // Hide the loader when photos are loaded
+            }
+        }
+
+        function displayPhotos(photoUrls) {
+            const photosDiv = document.getElementById('photos');
+            photoUrls.forEach(photoUrl => {
+                // Prepend 'Images/' to the photoUrl
+                const fullImageUrl = `Images/${photoUrl}`;
+                console.log('Image URL:', fullImageUrl); // Log image URLs for debugging
+                const img = document.createElement('img');
+                img.src = fullImageUrl; // Use the provided URL with 'Images/' directory
+                photosDiv.appendChild(img);
+            });
+        }
+
+        function hideLoader() {
+            document.getElementById('loader').style.display = 'none';
+        }
+
+        // Call fetchPhotos() when the page loads
+        window.onload = function () {
+            document.getElementById('loader').style.display = 'block'; // Show the loader initially
+            fetchPhotos();
+        };
+    </script>
+</body>
+</html>

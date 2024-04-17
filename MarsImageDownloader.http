@@ -1,0 +1,6 @@
+@MarsImageDownloader_HostAddress = http://localhost:5261
+
+GET {{MarsImageDownloader_HostAddress}}/MarsRoverPhoto/
+Accept: application/json
+
+###
